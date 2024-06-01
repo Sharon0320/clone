@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.EnumType.*;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -15,13 +17,16 @@ public class Statement extends BaseEntity{
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="from_account")
     private Account from;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="to_account")
     private Account to;
 
     private int amount;
 
+    @Enumerated(STRING)
     private transactionType type;
 
     @Builder

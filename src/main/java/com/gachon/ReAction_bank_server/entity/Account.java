@@ -15,9 +15,16 @@ public class Account extends BaseEntity{
 
     private String accountNum;
 
+    private int balance;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Builder
-    private Account(int id, String accountNum) {
-        this.id = id;
+    private Account(String accountNum, int balance, User user) {
         this.accountNum = accountNum;
+        this.balance = balance;
+        this.user = user;
     }
 }
