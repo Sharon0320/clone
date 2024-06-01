@@ -1,17 +1,18 @@
 package com.gachon.ReAction_bank_server.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Account extends BaseEntity{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String accountNum;
 
@@ -26,5 +27,26 @@ public class Account extends BaseEntity{
         this.accountNum = accountNum;
         this.balance = balance;
         this.user = user;
+    }
+
+    public static Account of(String accountNum, int balance, User user){
+        return Account.builder()
+                .accountNum(accountNum)
+                .balance(balance)
+                .user(user)
+                .build();
+    }
+
+    public static Account create(String accountNum, User user){
+        return Account.builder()
+                .accountNum(accountNum)
+                .balance(0)
+                .user(user)
+                .build();
+    }
+
+    public Account(String accountNum, int balance){
+        this.accountNum = accountNum;
+        this.balance = balance;
     }
 }
