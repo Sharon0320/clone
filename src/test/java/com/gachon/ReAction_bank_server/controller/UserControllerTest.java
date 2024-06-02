@@ -154,5 +154,4 @@ class UserControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.message").value("계좌번호 양식에 맞춰 입력해주세요!"))
                 .andExpect(jsonPath("$.data").isEmpty());
     }
-
 }

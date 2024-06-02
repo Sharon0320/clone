@@ -9,13 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserRepositoryTest extends IntegrationTestSupport {
-   @Autowired
-   private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @AfterEach
     void tearDown() {
@@ -47,5 +48,33 @@ class UserRepositoryTest extends IntegrationTestSupport {
 
         // then
         assertThat(result).isFalse();
+    }
+
+    @DisplayName("입력받은 ID를 가진 회원을 가져올 수 있다.")
+    @Test
+    void findByUserId() {
+        // given
+        User u1 = User.of("user", "u1", "pw");
+        User u2 = User.of("user", "u2", "pw");
+        User u3 = User.of("user", "u3", "pw");
+        userRepository.saveAll(List.of(u1, u2, u3));
+
+        // when
+        Optional<User> result = userRepository.findByuserId("u1");
+
+        // then
+        assertThat(result.get().getUserId()).isEqualTo("u1");
+    }
+
+    @DisplayName("입력받은 ID를 가진 회원이 없을 경우, 빈 객체가 반환된다.")
+    @Test
+    void findByUserIdWithEmptyDB() {
+        // given
+
+        // when
+        Optional<User> result = userRepository.findByuserId("u1");
+
+        // then
+        assertThat(result.isEmpty()).isTrue();
     }
 }
