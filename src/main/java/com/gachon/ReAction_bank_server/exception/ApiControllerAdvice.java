@@ -15,7 +15,7 @@ public class ApiControllerAdvice {
 
     /**
      * 회원가입 시 중복된 ID, 계좌번호 입력 시 호출
-     * 로그인 시 (추후 채워질 예정)
+     * 로그인 시 ID, 비밀번호가 잘못될 경우 호출
      * @param e
      * @return
      */
@@ -26,7 +26,7 @@ public class ApiControllerAdvice {
     }
 
     /**
-     * @NotEmpty, @Pattern 등에서 걸릴 시 사용
+     * @NotEmpty, @Pattern 등 Spring validation에 걸릴 경우 호출
      * @param e
      * @return
      */

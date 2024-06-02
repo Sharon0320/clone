@@ -3,6 +3,7 @@ package com.gachon.ReAction_bank_server.controller;
 import com.gachon.ReAction_bank_server.ControllerTestSupport;
 import com.gachon.ReAction_bank_server.dto.user.controller.LoginRequest;
 import com.gachon.ReAction_bank_server.dto.user.controller.RegisterRequest;
+import com.gachon.ReAction_bank_server.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -134,7 +135,7 @@ class UserControllerTest extends ControllerTestSupport {
     }
 
     @DisplayName("회원가입 시 양식에 맞는 계좌번호를 입력해야 한다.")
-    @CsvSource(value = {"1", "1-2", "1-2-3", "111-2-3", "1-222-333", "1-2-3333"})
+    @CsvSource(value = {"계좌번호", "AAA-BBB-CCCC", "   -   -    -", "1", "1-2", "1-2-3", "111-2-3", "1-222-333", "1-2-3333"})
     @ParameterizedTest(name = "{0}")
     void registerWithInvalidAccountNum(String invalidAccountNum) throws Exception {
         // given
@@ -159,12 +160,12 @@ class UserControllerTest extends ControllerTestSupport {
 
     /**
      * When value in session.setAttribute(name, value) is null, it acts as removeAttribute()!
-     * S
+     *
      * @throws Exception
      */
     @DisplayName("로그인할 수 있다.")
     @Test
-    void login() throws Exception{
+    void login() throws Exception {
         // given
         LoginRequest req = LoginRequest.of("userId", "pw");
 
@@ -182,7 +183,7 @@ class UserControllerTest extends ControllerTestSupport {
 
     @DisplayName("로그인 시 ID는 필수이다.")
     @Test
-    void loginWithEmptyID() throws Exception{
+    void loginWithEmptyID() throws Exception {
         // given
         LoginRequest req = LoginRequest.builder()
                 .pw("pw")
@@ -201,7 +202,7 @@ class UserControllerTest extends ControllerTestSupport {
 
     @DisplayName("로그인 시 비밀번호는 필수이다.")
     @Test
-    void loginWithEmptyPW() throws Exception{
+    void loginWithEmptyPW() throws Exception {
         // given
         LoginRequest req = LoginRequest.builder()
                 .userId("id")
@@ -216,5 +217,23 @@ class UserControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
                 .andExpect(jsonPath("$.message").value("로그인 시 비밀번호는 필수입니다"));
+    }
+
+    @DisplayName("로그아웃할 수 있다.")
+    @Test
+    void logout() throws Exception{
+        // given
+        User loginUser = User.of("kim", "han", "123");
+
+        // when // then
+        mockMvc.perform(post("/logout")
+                .contentType(APPLICATION_JSON)
+                .sessionAttr("loginUser", loginUser))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value(HttpStatus.OK.name()))
+                .andExpect(request().sessionAttributeDoesNotExist());
     }
 }

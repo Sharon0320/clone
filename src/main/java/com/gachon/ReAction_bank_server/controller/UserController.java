@@ -39,4 +39,13 @@ public class UserController {
         session.setAttribute("loginUser", user);
         return ApiResponse.success();
     }
+
+    @PostMapping("/logout")
+    public ApiResponse logout(HttpServletRequest servletRequest){
+        HttpSession session = servletRequest.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return ApiResponse.success();
+    }
 }
