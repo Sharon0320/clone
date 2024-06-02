@@ -53,12 +53,6 @@ public class UserService {
                 .findByuserId(req.getUserId())
                 .filter(m -> m.getPw().equals(req.getPw()))
                 .orElseThrow(() -> new IllegalArgumentException("ID 또는 비밀번호가 잘못되었습니다!"));
-
-//        // 2. User와 매핑된 account 확인
-//        Account account = accountRepository
-//                .findByUser(user)
-//                .orElseThrow(() -> new IllegalArgumentException("소유 중인 계좌가 없습니다!"));
-
 //        return new LoginResponse(user.getName(), user.getUserId(), account.getAccountNum());
     }
 }

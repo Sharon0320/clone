@@ -19,7 +19,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             response.sendRedirect("/login");
             return false;
         }
-
+        log.info("인증 사용자 요청");
         return true;
     }
 }
