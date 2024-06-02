@@ -53,6 +53,5 @@ public class UserService {
                 .findByuserId(req.getUserId())
                 .filter(m -> m.getPw().equals(req.getPw()))
                 .orElseThrow(() -> new IllegalArgumentException("ID 또는 비밀번호가 잘못되었습니다!"));
-//        return new LoginResponse(user.getName(), user.getUserId(), account.getAccountNum());
     }
 }
