@@ -49,4 +49,11 @@ public class Account extends BaseEntity{
         this.accountNum = accountNum;
         this.balance = balance;
     }
+
+    public void deposit(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("입금 금액은 양수여야 합니다.");
+        }
+        this.balance += amount;
+    }
 }

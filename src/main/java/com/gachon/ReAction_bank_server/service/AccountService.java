@@ -23,4 +23,13 @@ public class AccountService {
 
         return UserAccountResponse.of(account.getId(), account.getAccountNum(), account.getBalance());
     }
+
+    @Transactional
+    public UserAccountResponse deposit(Long accountId, int amount) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("계좌를 찾을 수 없습니다!"));
+        account.deposit(amount);
+        accountRepository.save(account);
+        return UserAccountResponse.of(account.getId(), account.getAccountNum(), account.getBalance());
+    }
 }
