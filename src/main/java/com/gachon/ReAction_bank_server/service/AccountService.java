@@ -5,7 +5,6 @@ import com.gachon.ReAction_bank_server.entity.Account;
 import com.gachon.ReAction_bank_server.entity.User;
 import com.gachon.ReAction_bank_server.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +28,15 @@ public class AccountService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("계좌를 찾을 수 없습니다!"));
         account.deposit(amount);
+        accountRepository.save(account);
+        return UserAccountResponse.of(account.getId(), account.getAccountNum(), account.getBalance());
+    }
+
+    @Transactional
+    public UserAccountResponse withdraw(Long accountId, int amount) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("계좌를 찾을 수 없습니다!"));
+        account.withdraw(amount);
         accountRepository.save(account);
         return UserAccountResponse.of(account.getId(), account.getAccountNum(), account.getBalance());
     }
