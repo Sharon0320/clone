@@ -1,10 +1,7 @@
 package com.gachon.ReAction_bank_server.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import static jakarta.persistence.GenerationType.*;
 
@@ -12,6 +9,7 @@ import static jakarta.persistence.GenerationType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"name", "userId"})
 public class User extends BaseEntity{
     @Id
     @GeneratedValue(strategy = IDENTITY)

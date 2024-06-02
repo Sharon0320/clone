@@ -1,4 +1,4 @@
-package com.gachon.ReAction_bank_server.dto.user;
+package com.gachon.ReAction_bank_server.dto.user.response;
 
 import com.gachon.ReAction_bank_server.entity.Account;
 import com.gachon.ReAction_bank_server.entity.User;

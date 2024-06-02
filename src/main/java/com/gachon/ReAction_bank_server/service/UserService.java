@@ -1,7 +1,8 @@
 package com.gachon.ReAction_bank_server.service;
 
-import com.gachon.ReAction_bank_server.dto.user.controller.RegisterRequest;
-import com.gachon.ReAction_bank_server.dto.user.RegisterResponse;
+import com.gachon.ReAction_bank_server.dto.user.response.LoginResponse;
+import com.gachon.ReAction_bank_server.dto.user.response.RegisterResponse;
+import com.gachon.ReAction_bank_server.dto.user.service.LoginServiceRequest;
 import com.gachon.ReAction_bank_server.dto.user.service.RegisterServiceRequest;
 import com.gachon.ReAction_bank_server.entity.Account;
 import com.gachon.ReAction_bank_server.entity.User;
@@ -26,7 +27,6 @@ public class UserService {
      * @param req (userId, pw, name, accountNum)
      * @return res
      */
-
     public RegisterResponse register(RegisterServiceRequest req) {
 
         // 1. 중복된 ID, 계좌번호가 있는지 확인
@@ -44,5 +44,21 @@ public class UserService {
         Account savedAccount = accountRepository.save(account);
 
         return RegisterResponse.of(savedUser, savedAccount);
+    }
+
+    public User login(LoginServiceRequest req){
+
+        // 1. ID, PW 가진 User 가져옴
+        return userRepository
+                .findByuserId(req.getUserId())
+                .filter(m -> m.getPw().equals(req.getPw()))
+                .orElseThrow(() -> new IllegalArgumentException("ID 또는 비밀번호가 잘못되었습니다!"));
+
+//        // 2. User와 매핑된 account 확인
+//        Account account = accountRepository
+//                .findByUser(user)
+//                .orElseThrow(() -> new IllegalArgumentException("소유 중인 계좌가 없습니다!"));
+
+//        return new LoginResponse(user.getName(), user.getUserId(), account.getAccountNum());
     }
 }
