@@ -15,25 +15,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
-    permissions:
-      contents: read
 
     steps:
-     # - name: Install Mysql dependencies
-     #   run: |
-     #    sudo apt-get update
-     #    sudo apt-get install -y mysql-client   
+     - name: Install Mysql dependencies
+       run: |
+        sudo apt-get update
+        sudo apt-get install -y mysql-client   
           
       # Setup MYSQL Test Environment 
      - name : MySQL setting
        uses : mirromutth/mysql-action@v1.1
        with:
-           host Port : 3306
-           mysql version : '8.0.36'
            mysql database : reactionbanktestdb
-           mysql user : 'reaction'
-           mysql password : 'reaction123'
+           mysql user : reaction
+           mysql password : reaction123
 
      - name : Checkout code    
        uses: actions/checkout@v4
