@@ -25,13 +25,13 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y mysql-client   
 
-     - name : Make application.properties
-       run : |
-        cd ./src/main/resources
-           touch ./application.properties
+     # - name : Make application.properties
+     #   run : |
+     #    cd ./src/main/resources
+     #       touch ./application.properties
 
-        echo "${{secrets.DATABASE_PROPERTIES}}" >> ./application.properties
-        shell : bash
+     #    echo "${{secrets.DATABASE_PROPERTIES}}" >> ./application.properties
+     #    shell : bash
           
       # Setup MYSQL Test Environment 
      - name : MySQL setting
