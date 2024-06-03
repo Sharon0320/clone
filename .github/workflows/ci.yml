@@ -1,4 +1,4 @@
-name: Reaction bank's CI using GitHub Actions
+name: Reaction bank's CI
 
 # main 브랜치에 PR 열릴 때 / 닫힐 때 CI 실행
 # opened : When PR is initially created
@@ -15,21 +15,45 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     permissions:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
+     - name: Install Mysql dependencies
+       run: |
+        sudo apt-get update
+        sudo apt-get install -y mysql-client   
+
+     - name : Make application.properties
+       run : |
+        cd ./src/main/resources
+           touch ./application.properties
+
+        echo "${{secrets.DATABASE_PROPERTIES}}" >> ./application.properties
+        shell : bash
+          
+      # Setup MYSQL Test Environment 
+     - name : MySQL setting
+       uses : mirromutth/mysql-action@v1.1
+       with:
+           host Port : 3306
+           mysql version : '8.0.36'
+           mysql database : reactionbanktestdb
+           mysql user : 'reaction'
+           mysql password : ${{secrets.MYSQL_PASSWORD}}
+           
+     - uses: actions/checkout@v4
+     - name: Set up JDK 17
+       uses: actions/setup-java@v4
+       with:
           java-version: '17'
           distribution: 'temurin'
 
       # gradle caching - 빌드 시간 향상
-      - name: Gradle Caching
-        uses: actions/cache@v3
-        with:
+     - name: Gradle Caching
+       uses: actions/cache@v3
+       with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
@@ -37,27 +61,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # Setup MYSQL Test Environment 
-      - name : MySQL setting
-        uses : mirromutth/mysql-action@v1.1
-        with:
-           host Port : 3306
-           mysql database : 'reactionbanktestdb'
-           mysql username : 'reaction'
-           mysql password : 'reaction123'
-            
       # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
       # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+     - name: Setup Gradle
+       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
       
-      - name : Make gradlew executable
-        run : chmod +x ./gradlew
+     - name : Make gradlew executable
+       run : chmod +x ./gradlew
         
-      - name: Build with Gradle Wrapper
-        run: ./gradlew build
+     - name: Build with Gradle Wrapper
+       run: ./gradlew build
 
       # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
       # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
-      - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+     - name: Generate and submit dependency graph
+       uses: gradle/actions/dependency-submission@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
