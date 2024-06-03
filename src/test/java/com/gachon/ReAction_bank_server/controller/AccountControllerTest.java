@@ -35,7 +35,7 @@ class AccountControllerTest extends ControllerTestSupport {
     }
 
     /**
-     * Session이 없기 때문에 인터셉터에 걸림, /login으로 redirect 이뤄짐
+     * Session이 없기 때문에 인터셉터에 걸림, 401 반환
      * @throws Exception
      */
     @DisplayName("세션이 없다면 계좌를 불러올 수 없다.")
@@ -47,6 +47,6 @@ class AccountControllerTest extends ControllerTestSupport {
       mockMvc.perform(get("/accounts/own")
               .contentType(MediaType.APPLICATION_JSON))
               .andDo(print())
-              .andExpect(status().isFound());
+              .andExpect(status().isUnauthorized());
     }
 }
