@@ -16,7 +16,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         if (session == null || session.getAttribute("loginUser") == null){
             log.info("미인증 사용자 요청");
-            response.sendRedirect("/");
+//            response.sendRedirect("/login");
+            // 세션 없이 접근했을 경우 401 반환
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
 
