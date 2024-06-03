@@ -36,6 +36,15 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+
+      # Setup MYSQL Test Environment 
+      - name : MySQL setting
+        uses : mirromutth/mysql-action@v1.1
+        with:
+           host Port : 3306
+           mysql database : 'reactionbanktestdb'
+           mysql username : 'reaction'
+           mysql password : 'reaction123'
             
       # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
       # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
