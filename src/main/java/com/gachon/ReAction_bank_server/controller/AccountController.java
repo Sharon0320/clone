@@ -2,9 +2,12 @@ package com.gachon.ReAction_bank_server.controller;
 
 import com.gachon.ReAction_bank_server.dto.ApiResponse;
 import com.gachon.ReAction_bank_server.dto.account.controller.AmountRequest;
+import com.gachon.ReAction_bank_server.dto.account.controller.TransferRequest;
+import com.gachon.ReAction_bank_server.dto.account.response.TransferResponse;
 import com.gachon.ReAction_bank_server.dto.account.response.UserAccountResponse;
 import com.gachon.ReAction_bank_server.entity.User;
 import com.gachon.ReAction_bank_server.service.AccountService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,9 +42,16 @@ public class AccountController {
     @PostMapping("/{id}/withdraw")
     public ApiResponse<UserAccountResponse> withdraw(
             @SessionAttribute(name = "loginUser") User loginUser,
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @RequestBody AmountRequest amountResponse) {
         UserAccountResponse response = accountService.withdraw(id, amountResponse.getAmount());
         return ApiResponse.success(response);
+    }
+
+    @PostMapping("/{id}/transfer")
+    public ApiResponse<TransferResponse> transfer(@SessionAttribute(name = "loginUser") User loginUser,
+                                                  @PathVariable("id") Long id,
+                                                  @Valid @RequestBody TransferRequest transferRequest){
+        return ApiResponse.success(accountService.transfer(loginUser, transferRequest.to()));
     }
 }

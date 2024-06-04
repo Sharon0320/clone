@@ -3,14 +3,13 @@ package com.gachon.ReAction_bank_server.service;
 import com.gachon.ReAction_bank_server.IntegrationTestSupport;
 import com.gachon.ReAction_bank_server.dto.account.response.TransferResponse;
 import com.gachon.ReAction_bank_server.dto.account.response.UserAccountResponse;
+import com.gachon.ReAction_bank_server.dto.account.service.TransferServiceRequest;
 import com.gachon.ReAction_bank_server.entity.Account;
 import com.gachon.ReAction_bank_server.entity.Statement;
 import com.gachon.ReAction_bank_server.entity.User;
-import com.gachon.ReAction_bank_server.entity.transactionType;
 import com.gachon.ReAction_bank_server.repository.AccountRepository;
 import com.gachon.ReAction_bank_server.repository.StatementRepository;
 import com.gachon.ReAction_bank_server.repository.UserRepository;
-import net.bytebuddy.pool.TypePool;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,11 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.gachon.ReAction_bank_server.entity.Account.createTestAccount;
 import static com.gachon.ReAction_bank_server.entity.transactionType.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AccountServiceTest extends IntegrationTestSupport {
 

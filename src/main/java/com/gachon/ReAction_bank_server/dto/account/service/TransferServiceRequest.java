@@ -1,4 +1,4 @@
-package com.gachon.ReAction_bank_server.service;
+package com.gachon.ReAction_bank_server.dto.account.service;
 
 import lombok.Builder;
 import lombok.Getter;

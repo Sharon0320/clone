@@ -2,17 +2,15 @@ package com.gachon.ReAction_bank_server.service;
 
 import com.gachon.ReAction_bank_server.dto.account.response.TransferResponse;
 import com.gachon.ReAction_bank_server.dto.account.response.UserAccountResponse;
+import com.gachon.ReAction_bank_server.dto.account.service.TransferServiceRequest;
 import com.gachon.ReAction_bank_server.entity.Account;
 import com.gachon.ReAction_bank_server.entity.Statement;
 import com.gachon.ReAction_bank_server.entity.User;
-import com.gachon.ReAction_bank_server.entity.transactionType;
 import com.gachon.ReAction_bank_server.repository.AccountRepository;
 import com.gachon.ReAction_bank_server.repository.StatementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 import static com.gachon.ReAction_bank_server.entity.transactionType.*;
 
