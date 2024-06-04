@@ -1,0 +1,67 @@
+name: Reaction bank's CI
+
+# main 브랜치에 PR 열릴 때 / 닫힐 때 CI 실행
+# opened : When PR is initially created
+# synchronize : When commits are pushed to PR's source branch 
+#               Additional commits to PR will trigger workflow
+# closed : merge, closed without merge
+     
+on:
+  pull_request:
+    types: [opened, synchronize, closed]
+    branches: ["main"]
+
+# ubuntu 환경에서 실행
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+       # MySQL 의존성 설치
+     - name: Install Mysql dependencies
+       run: |
+        sudo apt-get update
+        sudo apt-get install -y mysql-client   
+          
+      # MySQL 이용한 테스트 위한 환경 설정 (application-test.properties 설정 따름)
+     - name : MySQL setting
+       uses : mirromutth/mysql-action@v1.1
+       with:
+           mysql database : reactionbanktestdb
+           mysql user : reaction
+           mysql password : reaction123
+
+       # Repository 코드를 CI 서버에 반영
+     - name : Checkout code    
+       uses: actions/checkout@v4
+
+       # JDK 17 사용 
+     - name: Set up JDK 17
+       uses: actions/setup-java@v4
+       with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # gradle caching - 빌드 시간 향상
+     - name: Gradle Caching
+       uses: actions/cache@v3
+       with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+     #  # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
+     #  # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
+     # - name: Setup Gradle
+     #   uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+
+       # 권한 없음 막기 위해 ./gradlew build와 나눠서 작성
+     - name : Make gradlew executable
+       run : chmod +x ./gradlew
+
+       # build & test 자동화 
+     - name: Build with Gradle Wrapper
+       run: ./gradlew build
