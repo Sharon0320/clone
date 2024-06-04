@@ -1,14 +1,12 @@
 package com.gachon.ReAction_bank_server.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"id", "accountNum", "balance"})
 public class Account extends BaseEntity{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

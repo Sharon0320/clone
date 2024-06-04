@@ -90,4 +90,31 @@ class AccountRepositoryTest extends IntegrationTestSupport {
         // then
         assertThat(result.isEmpty()).isTrue();
     }
+
+    @DisplayName("입금에 사용할 계좌를 가져올 수 있다.")
+    @Test
+    void findDepositAccountWithLock(){
+      // given
+        Account a1 = createTestAccount("111-222-3333", 10);
+        Account a2 = createTestAccount("111-222-3334", 20);
+        Account a3 = createTestAccount("111-222-3335", 30);
+        accountRepository.saveAll(List.of(a1, a2, a3));
+
+        // when
+        Optional<Account> result = accountRepository.findDepositAccountWithLock("111-222-3334");
+
+        // then
+        assertThat(result).as("입금할 계좌를 가져올 수 있다.").isPresent();
+
+        assertThat(result.get()).as("입금한 계좌의 정보를 가져올 수 있다.")
+                .extracting("accountNum", "balance")
+                .containsExactly("111-222-3334", 20);
+    }
+
+    private static Account createTestAccount(String accountNum, int balance) {
+        return Account.builder()
+                .accountNum(accountNum)
+                .balance(balance)
+                .build();
+    }
 }
