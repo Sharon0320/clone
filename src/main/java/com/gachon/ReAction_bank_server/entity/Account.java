@@ -47,4 +47,25 @@ public class Account extends BaseEntity{
         this.accountNum = accountNum;
         this.balance = balance;
     }
+
+    public static Account createTestAccount(String accountNum, int balance) {
+        return Account.builder()
+                .accountNum(accountNum)
+                .balance(balance)
+                .build();
+    }
+
+    private int deposit(int amount){
+        return this.balance += amount;
+    }
+
+    private int withdraw(int amount){
+        return this.balance -= amount;
+    }
+
+    public int transfer(Account receiverAccount, int amount) {
+        this.balance -= amount;
+        receiverAccount.deposit(amount);
+        return this.balance;
+    }
 }

@@ -26,7 +26,13 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query("select a from Account a where a.accountNum = :accountNum")
     public Optional<Account> findDepositAccountWithLock(@Param("accountNum") String accountNum);
 
-//    @Modifying(clearAutomatically = true)
-//    @Query("update Account a set a.balance = a.balance + :amount where a = :account")
-//    public int deposit(@Param("account") Account account, @Param("amount") int amount);
+    @Modifying(clearAutomatically = true)
+    @Query("update Account a set a.balance = a.balance + :amount where a = :account")
+    public int deposit(@Param("account") Account account, @Param("amount") int amount);
+
+    @Modifying(clearAutomatically = true)
+    @Query("update Account a set a.balance = a.balance - :amount where a = :account")
+    public int withdraw(@Param("account") Account account, @Param("amount") int amount);
+
+
 }

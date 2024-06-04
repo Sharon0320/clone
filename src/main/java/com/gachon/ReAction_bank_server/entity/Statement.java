@@ -37,4 +37,13 @@ public class Statement extends BaseEntity{
         this.amount = amount;
         this.type = type;
     }
+
+    public static Statement of(Account from, Account to, int amount, transactionType type){
+        return Statement.builder()
+                .from(from)
+                .to(to)
+                .amount(amount)
+                .type(type)
+                .build();
+    }
 }
