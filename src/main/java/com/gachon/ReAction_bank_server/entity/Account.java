@@ -49,4 +49,24 @@ public class Account extends BaseEntity{
         this.accountNum = accountNum;
         this.balance = balance;
     }
+
+    public void deposit(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("입금 금액은 양수여야 합니다.");
+        }
+        if (amount%10 != 0) {
+            throw new IllegalArgumentException("1원 단위는 입금이 불가능합니다.");
+        }
+        this.balance += amount;
+    }
+
+    public void withdraw(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("출금 금액은 양수여야 합니다.");
+        }
+        if (amount%10 != 0) {
+            throw new IllegalArgumentException("1원 단위는 출금이 불가능합니다.");
+        }
+        this.balance -= amount;
+    }
 }
