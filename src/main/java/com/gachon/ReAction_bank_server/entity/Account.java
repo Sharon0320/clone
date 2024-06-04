@@ -1,14 +1,12 @@
 package com.gachon.ReAction_bank_server.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"id", "accountNum", "balance"})
 public class Account extends BaseEntity{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -50,6 +48,13 @@ public class Account extends BaseEntity{
         this.balance = balance;
     }
 
+    public static Account createTestAccount(String accountNum, int balance) {
+        return Account.builder()
+                .accountNum(accountNum)
+                .balance(balance)
+                .build();
+    }
+
     public void deposit(int amount) {
         if (amount < 0) {
             throw new IllegalArgumentException("입금 금액은 양수여야 합니다.");
@@ -68,5 +73,11 @@ public class Account extends BaseEntity{
             throw new IllegalArgumentException("1원 단위는 출금이 불가능합니다.");
         }
         this.balance -= amount;
+    }
+
+    public int transfer(Account receiverAccount, int amount) {
+        this.balance -= amount;
+        receiverAccount.deposit(amount);
+        return this.balance;
     }
 }
