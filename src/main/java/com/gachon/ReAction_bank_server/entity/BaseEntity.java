@@ -13,9 +13,6 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity{
    @CreatedDate
-   protected LocalDateTime createdDate;
+   private LocalDateTime createdDate;
 
-   protected void setCreatedDateForTest(LocalDateTime createdDate){
-      this.createdDate = createdDate;
-   }
 }

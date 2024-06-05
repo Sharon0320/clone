@@ -60,19 +60,19 @@ class StatementServiceTest extends IntegrationTestSupport {
         Account notLoginUserAccount = accounts.get(1);
 
         // 자신 계좌로 입금 (조회 대상)
-        Statement s1 = createStatementForTest(loginUserAccount, loginUserAccount, 100, DEPOSIT, now);
+        Statement s1 = createStatementForTest(loginUserAccount, loginUserAccount, 100, DEPOSIT);
 
         // 자신 계좌에서 출금 (조회 대상)
-        Statement s2 = createStatementForTest(loginUserAccount, loginUserAccount, 200, WITHDRAW, now.plusDays(1));
+        Statement s2 = createStatementForTest(loginUserAccount, loginUserAccount, 200, WITHDRAW);
 
         // 자신 계좌에서 타 계좌로 이체 (조회 대상)
-        Statement s3 = createStatementForTest(loginUserAccount, notLoginUserAccount, 300, TRANSFER, now.plusDays(2));
+        Statement s3 = createStatementForTest(loginUserAccount, notLoginUserAccount, 300, TRANSFER);
 
         // 타 계좌에서 자신 계좌로 이체 (조회 대상)
-        Statement s4 = createStatementForTest(notLoginUserAccount, loginUserAccount, 400, TRANSFER, now.plusDays(3));
+        Statement s4 = createStatementForTest(notLoginUserAccount, loginUserAccount, 400, TRANSFER);
 
         // 타 계좌에서 타 계좌로 출금 (조회 대상 X)
-        Statement s5 = createStatementForTest(notLoginUserAccount, notLoginUserAccount, 50000, WITHDRAW, now.plusDays(4));
+        Statement s5 = createStatementForTest(notLoginUserAccount, notLoginUserAccount, 50000, WITHDRAW);
         statementRepository.saveAll(List.of(s1, s2, s3, s4, s5));
 
         // when
@@ -118,13 +118,12 @@ class StatementServiceTest extends IntegrationTestSupport {
         assertThat(userStatement.getBalance()).as("계좌 잔액을 조회할 수 있다.").isEqualTo(1000);
     }
 
-    private static Statement createStatementForTest(Account from, Account to, int amount, transactionType type, LocalDateTime createdDate) {
+    private static Statement createStatementForTest(Account from, Account to, int amount, transactionType type) {
         return Statement.builder()
                 .from(from)
                 .to(to)
                 .amount(amount)
                 .type(type)
-                .createdDate(createdDate)
                 .build();
     }
 }
