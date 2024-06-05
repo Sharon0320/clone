@@ -49,6 +49,10 @@ public class AccountService {
                 .orElseThrow(() -> new IllegalArgumentException("계좌를 찾을 수 없습니다!"));
         account.withdraw(amount);
         accountRepository.save(account);
+
+        Statement transferStatement = Statement.of(account, account, amount, WITHDRAW);
+        statementRepository.save(transferStatement);
+
         return UserAccountResponse.of(account.getId(), account.getAccountNum(), account.getBalance());
     }
 
