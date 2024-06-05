@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static jakarta.persistence.EnumType.*;
 
 @Entity
@@ -46,4 +49,6 @@ public class Statement extends BaseEntity{
                 .type(type)
                 .build();
     }
+
+
 }
