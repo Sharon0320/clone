@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static jakarta.persistence.EnumType.*;
 
 @Entity
@@ -31,11 +34,12 @@ public class Statement extends BaseEntity{
     private transactionType type;
 
     @Builder
-    private Statement(Account from, Account to, int amount, transactionType type) {
+    private Statement(Account from, Account to, int amount, transactionType type, LocalDateTime createdDate) {
         this.from = from;
         this.to = to;
         this.amount = amount;
         this.type = type;
+        this.createdDate = createdDate;
     }
 
     public static Statement of(Account from, Account to, int amount, transactionType type){
@@ -46,4 +50,6 @@ public class Statement extends BaseEntity{
                 .type(type)
                 .build();
     }
+
+
 }
