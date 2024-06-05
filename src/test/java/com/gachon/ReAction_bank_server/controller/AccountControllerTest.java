@@ -13,10 +13,37 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class AccountControllerTest extends ControllerTestSupport {
+
+    @DisplayName("3000번 포트에 대한 CORS 설정을 확인할 수 있다.")
+    @Test
+    void cors() throws Exception{
+      // given
+
+      // when // then
+        mockMvc.perform(options("/login")
+                .header("Origin", "http://localhost:3000")
+                .header("Access-Control-Request-Method", "POST"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(header().string("Access-Control-Allow-Origin", "http://localhost:3000"))
+                .andExpect(header().string("Access-Control-Allow-Methods", "GET,HEAD,POST,PUT,DELETE,PATCH"));
+    }
+
+    @DisplayName("타 포트에서는 CORS 설정에 의거, 접근할 수 없다. (HTTP 403, FORBIDDEN 반환)")
+    @Test
+    void cors_InvalidPort() throws Exception{
+      // given
+
+      // when // then
+        mockMvc.perform(options("/login")
+                .header("Origin", "http://localhost:3001")
+                .header("Access-Control-Request-Method", "POST"))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
 
     @DisplayName("로그인 유저의 계좌를 불러올 수 있다.")
     @Test

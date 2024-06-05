@@ -81,7 +81,8 @@ class AccountServiceTest extends IntegrationTestSupport {
                 .hasMessage("소유 중인 계좌가 없습니다!");
     }
 
-    @Transactional // To avoid LazyInitializationException when checking statement's loginUserAccount, receiverAccount!
+    @Transactional // To avoid LazyInitializationException
+                   // when checking statement's loginUserAccount, receiverAccount!
     @DisplayName("로그인 유저의 계좌에서 타 계좌로 이체할 수 있다.")
     @Test
     void transfer() {
