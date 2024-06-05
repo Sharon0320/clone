@@ -33,9 +33,9 @@ public class AccountController {
     @PostMapping("/{id}/deposit")
     public ApiResponse<UserAccountResponse> deposit(
             @SessionAttribute(name = "loginUser") User loginUser,
-            @PathVariable Long id,
-            @RequestBody int amount) {
-        UserAccountResponse response = accountService.deposit(id, amount);
+            @PathVariable("id") Long id,
+            @RequestBody AmountRequest amountRequest) {
+        UserAccountResponse response = accountService.deposit(id, amountRequest.getAmount());
         return ApiResponse.success(response);
     }
 
@@ -43,8 +43,8 @@ public class AccountController {
     public ApiResponse<UserAccountResponse> withdraw(
             @SessionAttribute(name = "loginUser") User loginUser,
             @PathVariable("id") Long id,
-            @RequestBody AmountRequest amountResponse) {
-        UserAccountResponse response = accountService.withdraw(id, amountResponse.getAmount());
+            @RequestBody AmountRequest amountRequest) {
+        UserAccountResponse response = accountService.withdraw(id, amountRequest.getAmount());
         return ApiResponse.success(response);
     }
 
