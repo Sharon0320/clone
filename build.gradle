@@ -58,3 +58,7 @@ tasks.named('test') {
 //compileQuerydsl {
 //	options.annotationProcessorPath = configurations.querydsl
 //}
+
+jar {
+	enabled = false
+}

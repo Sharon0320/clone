@@ -10,5 +10,4 @@ public class ReActionBankServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ReActionBankServerApplication.class, args);
 	}
-
 }
