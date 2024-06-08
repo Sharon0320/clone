@@ -3,6 +3,7 @@ package com.gachon.ReAction_bank_server.controller;
 import com.gachon.ReAction_bank_server.dto.ApiResponse;
 import com.gachon.ReAction_bank_server.dto.account.controller.AmountRequest;
 import com.gachon.ReAction_bank_server.dto.account.controller.TransferRequest;
+import com.gachon.ReAction_bank_server.dto.account.response.AccountResponse;
 import com.gachon.ReAction_bank_server.dto.account.response.TransferResponse;
 import com.gachon.ReAction_bank_server.dto.account.response.UserAccountResponse;
 import com.gachon.ReAction_bank_server.entity.User;
@@ -31,20 +32,20 @@ public class AccountController {
 
 
     @PostMapping("/{id}/deposit")
-    public ApiResponse<UserAccountResponse> deposit(
+    public ApiResponse<AccountResponse> deposit(
             @SessionAttribute(name = "loginUser") User loginUser,
             @PathVariable("id") Long id,
             @RequestBody AmountRequest amountRequest) {
-        UserAccountResponse response = accountService.deposit(id, amountRequest.getAmount());
+        AccountResponse response = accountService.deposit(id, amountRequest.getAmount());
         return ApiResponse.success(response);
     }
 
     @PostMapping("/{id}/withdraw")
-    public ApiResponse<UserAccountResponse> withdraw(
+    public ApiResponse<AccountResponse> withdraw(
             @SessionAttribute(name = "loginUser") User loginUser,
             @PathVariable("id") Long id,
             @RequestBody AmountRequest amountRequest) {
-        UserAccountResponse response = accountService.withdraw(id, amountRequest.getAmount());
+        AccountResponse response = accountService.withdraw(id, amountRequest.getAmount());
         return ApiResponse.success(response);
     }
 

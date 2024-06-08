@@ -1,5 +1,6 @@
 package com.gachon.ReAction_bank_server.service;
 
+import com.gachon.ReAction_bank_server.dto.account.response.AccountResponse;
 import com.gachon.ReAction_bank_server.dto.account.response.TransferResponse;
 import com.gachon.ReAction_bank_server.dto.account.response.UserAccountResponse;
 import com.gachon.ReAction_bank_server.dto.account.service.TransferServiceRequest;
@@ -31,7 +32,7 @@ public class AccountService {
     }
 
     @Transactional
-    public UserAccountResponse deposit(Long accountId, int amount) {
+    public AccountResponse deposit(Long accountId, int amount) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("계좌를 찾을 수 없습니다!"));
         account.deposit(amount);
@@ -40,11 +41,11 @@ public class AccountService {
         Statement transferStatement = Statement.of(account, account, amount, DEPOSIT);
         statementRepository.save(transferStatement);
 
-        return UserAccountResponse.of(account.getId(), account.getAccountNum(), account.getBalance());
+        return AccountResponse.of(account.getBalance());
     }
 
     @Transactional
-    public UserAccountResponse withdraw(Long accountId, int amount) {
+    public AccountResponse withdraw(Long accountId, int amount) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("계좌를 찾을 수 없습니다!"));
         account.withdraw(amount);
@@ -53,7 +54,7 @@ public class AccountService {
         Statement transferStatement = Statement.of(account, account, amount, WITHDRAW);
         statementRepository.save(transferStatement);
 
-        return UserAccountResponse.of(account.getId(), account.getAccountNum(), account.getBalance());
+        return AccountResponse.of(account.getBalance());
     }
 
     /**
