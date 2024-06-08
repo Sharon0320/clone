@@ -37,7 +37,7 @@ public class StatementService {
         // 2. 이력 가져옴
         List<Statement> statements = statementRepository.getUserStatements(loginUserAccount);
 
-        // 2-1. 빈 리스트일 경우 잔액액만 반환
+        // 2-1. 빈 리스트일 경우 잔액만 반환
         if(statements.size() == 0)
             return new StatementResponse(List.of(), loginUserAccount.getBalance());
 
