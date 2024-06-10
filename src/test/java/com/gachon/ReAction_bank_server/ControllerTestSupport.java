@@ -20,10 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
         StatementController.class
 })
 public abstract class ControllerTestSupport {
-
     @Autowired
     protected MockMvc mockMvc;
-
     @Autowired
     protected ObjectMapper objectMapper;
 

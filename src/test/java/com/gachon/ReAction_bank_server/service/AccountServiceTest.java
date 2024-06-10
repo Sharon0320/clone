@@ -23,19 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AccountServiceTest extends IntegrationTestSupport {
-
     @Autowired
     private AccountService accountService;
-
     @Autowired
     private AccountRepository accountRepository;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private StatementRepository statementRepository;
-
     @AfterEach
     void tearDown() {
         statementRepository.deleteAllInBatch();
