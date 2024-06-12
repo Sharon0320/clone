@@ -13,9 +13,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.gachon.ReAction_bank_server.entity.transactionType.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,19 +75,28 @@ class StatementServiceTest extends IntegrationTestSupport {
 
         // 타 계좌에서 타 계좌로 출금 (조회 대상 X)
         Statement s5 = createStatementForTest(notLoginUserAccount, notLoginUserAccount, 50000, WITHDRAW);
-        statementRepository.saveAll(List.of(s1, s2, s3, s4, s5));
+
+        List<Statement> statements = statementRepository.saveAll(List.of(s1, s2, s3, s4, s5));
+
+        // Set createdDate, private field by ReflectionTestUtils!
+        for(int i = 0; i <statements.size(); i++){
+            ReflectionTestUtils.setField(statements.get(i), "createdDate", now.plusDays(i));
+        }
+
+        // Merge, Update Query will execute! (All entities are already in DB)
+        statementRepository.saveAll(statements);
 
         // when
         StatementResponse userStatement = statementService.getUserStatements(loginUser);
 
         // then
         assertThat(userStatement.getStatementInfos()).as("거래 이력을 조회할 수 있다.").hasSize(4)
-                .extracting("amount", "type")
+                .extracting("date", "amount", "type")
                 .containsExactly(
-                        tuple(400, "이체"),
-                        tuple(-300, "이체"),
-                        tuple(-200, "출금"),
-                        tuple(100, "입금")
+                        tuple("2024-06-08",400, "이체"),
+                        tuple("2024-06-07", -300, "이체"),
+                        tuple("2024-06-06", -200, "출금"),
+                        tuple("2024-06-05", 100, "입금")
                 );
 
         assertThat(userStatement.getBalance()).as("계좌 잔액을 조회할 수 있다.").isEqualTo(1000);

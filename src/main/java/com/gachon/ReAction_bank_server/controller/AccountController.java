@@ -19,12 +19,6 @@ public class AccountController {
 
     private final AccountService accountService;
 
-
-    /**
-     * If session is none, it will be caught by Interceptor! redirect to /login!
-     * @param loginUser
-     * @return
-     */
     @GetMapping("/own")
     public ApiResponse<UserAccountResponse> getUserAccount(@SessionAttribute(name = "loginUser") User loginUser){
         return ApiResponse.success(accountService.getUserAccount(loginUser));
