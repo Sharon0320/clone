@@ -6,7 +6,7 @@ services:
     environment:
       MYSQL_DATABASE: reactionbank
       MYSQL_ROOT_HOST: '%'
-      MYSQL_ROOT_PASSWORD: 'Paul2839~'
+      MYSQL_ROOT_PASSWORD: '~'
       TZ: 'Asia/Seoul'
     ports:
       - "3306:3306"
@@ -30,7 +30,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/reactionbank?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: "root"
-      SPRING_DATASOURCE_PASSWORD: "Paul2839~"
+      SPRING_DATASOURCE_PASSWORD: "~"
     depends_on:
       - database
     networks:
